@@ -1,12 +1,12 @@
-FROM python:3.10-slim
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_RUN_PORT=8000
+ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies (single layer)
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Install system packages
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
     git \
     curl \
     wget \
@@ -14,22 +14,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     neofetch \
     software-properties-common \
-    python3-pip \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Set workdir
 WORKDIR /app
 
 # Install python deps
 COPY requirements.txt .
-RUN pip install --no-cache-dir wheel \
-    && pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir wheel \
+    && pip3 install --no-cache-dir -r requirements.txt
 
-# Copy project
+# Copy project files
 COPY . .
 
 EXPOSE 8000
 
-# Run ONE main process only
 CMD ["python3", "-m", "devgagan"]
