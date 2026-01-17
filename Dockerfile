@@ -1,14 +1,35 @@
-FROM python:3.10.4-slim
-RUN apt update && apt upgrade -y
-RUN apt-get install git curl python3-pip ffmpeg -y
-RUN apt-get -y install git
-RUN apt-get install -y wget python3-pip curl bash neofetch ffmpeg software-properties-common
-COPY requirements.txt .
+FROM python:3.10-slim
 
-RUN pip3 install wheel
-RUN pip3 install --no-cache-dir -U -r requirements.txt
+ENV DEBIAN_FRONTEND=noninteractive
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=8000
+
+# Install system dependencies (single layer)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    wget \
+    bash \
+    ffmpeg \
+    neofetch \
+    software-properties-common \
+    python3-pip \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
 WORKDIR /app
+
+# Install python deps
+COPY requirements.txt .
+RUN pip install --no-cache-dir wheel \
+    && pip install --no-cache-dir -r requirements.txt
+
+# Copy project
 COPY . .
+
 EXPOSE 8000
 
-CMD flask run -h 0.0.0.0 -p 8000 & python3 -m devgagan
+# Run ONE main process only
+CMD ["python3", "-m", "devgagan"]
