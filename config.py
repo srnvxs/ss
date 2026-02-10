@@ -21,8 +21,8 @@ MONGO_DB = getenv(
     "MONGO_DB",
     "mongodb+srv://sodom53905_db_user:77q9BcjDVXdOP4ib@cluster0.xj3ki6m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 )
-LOG_GROUP = getenv("LOG_GROUP", "-1003814466915")
-CHANNEL_ID = int(getenv("CHANNEL_ID", "-1003814466915"))
+LOG_GROUP = getenv("LOG_GROUP", "-1003696229894")
+CHANNEL_ID = int(getenv("CHANNEL_ID", "-1003696229894"))
 FREEMIUM_LIMIT = int(getenv("FREEMIUM_LIMIT", "0"))
 PREMIUM_LIMIT = int(getenv("PREMIUM_LIMIT", "9999"))
 WEBSITE_URL = getenv("WEBSITE_URL", "upshrink.com")
